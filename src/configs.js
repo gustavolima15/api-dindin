@@ -8,7 +8,7 @@ module.exports = {
   // Configurações do Postgres
   dbHost: 'localhost',
   dbPort: 5432,
-  dbName: 'mydb',
-  dbUser: 'myuser',
-  dbPassword: 'mypassword',
+  dbName: 'dindin',
+  dbUser: 'postgres',
+  dbPassword: 'postgres',
 }

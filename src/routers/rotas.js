@@ -7,5 +7,5 @@ rotas.post('/usuario', cadastrarUsuario);
 rotas.post('/login', login);
 
 rotas.use(verificarUsuarioLogado)
-
+//test
 module.exports = rotas

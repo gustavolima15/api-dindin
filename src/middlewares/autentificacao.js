@@ -20,7 +20,7 @@ const verificarUsuarioLogado = async (req, res, next) => {
         req.usuario = rows[0]
         next();
     } catch (error) {
-        return res.status(401).json({mensagem: 'Não autorizado'})
+        return res.status(401).json({mensagem: "Para acessar este recurso um token de autenticação válido deve ser enviado."})
     }
 }
 

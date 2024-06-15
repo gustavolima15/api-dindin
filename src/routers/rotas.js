@@ -6,6 +6,10 @@ const verificarUsuarioLogado = require('../middlewares/autentificacao')
 rotas.post('/usuario', cadastrarUsuario);
 rotas.post('/login', login);
 
+
 rotas.use(verificarUsuarioLogado)
 
+
+rotas.use(verificarUsuarioLogado)
+//test
 module.exports = rotas

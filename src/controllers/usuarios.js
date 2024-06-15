@@ -52,9 +52,14 @@ const login = async (req, res) => {
 
 }
 
+const detalharUsuario = async (req, res) => {
+    const {id, nome, email} = req.usuario; 
+    return res.json({id, nome, email,});
+}
+
 
 module.exports = {
     cadastrarUsuario,
-    listarUsuarios,
+    detalharUsuario,
     login
 };

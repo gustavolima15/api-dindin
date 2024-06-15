@@ -1,11 +1,12 @@
 const express = require('express')
 const rotas = express();
-const { cadastrarUsuario, login } = require('../controllers/usuarios');
+const { cadastrarUsuario, login, detalharUsuario } = require('../controllers/usuarios');
 const verificarUsuarioLogado = require('../middlewares/autentificacao')
 
 rotas.post('/usuario', cadastrarUsuario);
 rotas.post('/login', login);
 
-rotas.use(verificarUsuarioLogado)
-//test
-module.exports = rotas
+rotas.use(verificarUsuarioLogado);
+
+rotas.get('/usuario', detalharUsuario);
+module.exports = rotas;

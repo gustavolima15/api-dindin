@@ -7,7 +7,7 @@ const {
     atualizarUsuario 
 } = require('../controllers/usuarios');
 
-const {listarTransacoes, cadastrarTransacao} = require('../controllers/transacoes');
+const {listarTransacoes, cadastrarTransacao, obterTransacao} = require('../controllers/transacoes');
 const verificarUsuarioLogado = require('../middlewares/autentificacao')
 
 rotas.post('/usuario', cadastrarUsuario);
@@ -19,5 +19,6 @@ rotas.get('/usuario', detalharUsuario);
 rotas.put('/usuario', atualizarUsuario);
 
 rotas.post('/transacao', cadastrarTransacao);
-rotas.get('/transacao', listarTransacoes)
+rotas.get('/transacao', listarTransacoes);
+rotas.get('/transacao/:id', obterTransacao);
 module.exports = rotas;

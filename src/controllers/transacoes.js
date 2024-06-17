@@ -28,8 +28,27 @@ const cadastrarTransacao = async (req, res) => {
         return res.status(500).json('Erro no servidor')
     }
 }
+const obterTransacao = async (req, res) => {
+    const { id } = req.params;
+    try {
+        const { rows, rowCount } = await pool.query(`
+            select t.id, t.tipo, t.descricao, t.valor, t.data, t.usuario_id, t.categoria_id, c.descricao as categoria_nome 
+            from transacoes t 
+            join categorias c on t.categoria_id = c.id
+            where t.id = $1
+        `, [id]);
+
+        if (rowCount < 1) {
+            return res.status(404).json({ mensagem: "Transação não encontrada." });
+        }
+        return res.status(200).json(rows[0]);
+    } catch (error) {
+        return res.status(500).json('Erro no servidor');
+    }
+}
 
 module.exports = {
     listarTransacoes,
-    cadastrarTransacao
+    cadastrarTransacao,
+    obterTransacao
 }

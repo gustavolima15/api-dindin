@@ -14,6 +14,22 @@ const listarTransacoes = async (req, res) => {
     }
 }
 
+const cadastrarTransacao = async (req, res) => {
+    const {tipo, descricao, valor, data, categoria_id} = req.body;
+    console.log(req.usuario.id);
+    try {
+        const { rows } = await pool.query(
+            'insert into transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) values ($1, $2, $3, $4, $5, $6) returning *',
+            [descricao, valor, data, categoria_id, req.usuario.id, tipo]
+            )
+        console.log(rows)
+		return res.status(201).json(rows[0])
+    } catch (error) {
+        return res.status(500).json('Erro no servidor')
+    }
+}
+
 module.exports = {
-    listarTransacoes
+    listarTransacoes,
+    cadastrarTransacao
 }

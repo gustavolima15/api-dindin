@@ -46,9 +46,63 @@ const obterTransacao = async (req, res) => {
         return res.status(500).json('Erro no servidor');
     }
 }
+const atualizarTransacao = async (req, res) => {
+    const { id } = req.params;
+    const { descricao, valor, data, categoria_id, tipo } = req.body;
+
+    if (!descricao || !valor || !data || !categoria_id || !tipo) {
+        return res.status(404).json({ mensagem: 'Todos os campos obrigatórios devem ser informados!' });
+    }
+
+    if (tipo !== 'entrada' && tipo !== 'saida') {
+        return res.status(404).json({ mensagem: 'O tipo deve ser obrigatoriamente entrada ou saida!' });
+    }
+
+    try {
+        const verificarTransacaoUsuario = await pool.query('select * from transacoes where id = $1 and usuario_id = $2', [id, req.usuario.id]);
+
+        if (verificarTransacaoUsuario.rows.length === 0) {
+            return res.status(404).json({ mensagem: 'Atualização da transação não permitida ao usuário.' });
+        }
+
+        const verificarCategoriaExiste = await pool.query('select * from categorias where id = $1', [categoria_id]);
+
+        if (verificarCategoriaExiste.rows.length === 0) {
+            return res.status(404).json({ mensagem: 'Categoria inexistente!' });
+        }
+
+        await pool.query(`update transacoes 
+            set descricao = $1, valor = $2, data = $3, categoria_id = $4, tipo = $5
+            where id = $6 and usuario_id = $7`, [descricao, valor, data, categoria_id, tipo, id, req.usuario.id]);
+
+        return res.status(204).json();
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro ao atualizar a transação.' });
+    }
+}
+
+const deletarTransacao = async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const verificarTransacaoUsuario = await pool.query('select * from transacoes where id = $1 and usuario_id = $2', [id, req.usuario.id]);
+
+        if (verificarTransacaoUsuario === 0) {
+            return res.status(404).json({ mensagem: 'Exclusão da transação não permitida ao usuário.' });
+        }
+
+        await pool.query('delete from transacoes where id = $1 and usuario_id = $2', [id, req.usuario.id]);
+
+        return res.status(204).json();
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro ao deletar a transação.' });
+    }
+}
 
 module.exports = {
     listarTransacoes,
     cadastrarTransacao,
-    obterTransacao
+    obterTransacao,
+    atualizarTransacao,
+    deletarTransacao
 }

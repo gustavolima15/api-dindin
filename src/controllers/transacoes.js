@@ -99,10 +99,38 @@ const deletarTransacao = async (req, res) => {
     }
 }
 
+const obterExtratoTransacoes = async (req, res) => {
+    const id = req.usuario.id;
+    
+    try {
+        const entradas = await pool.query(
+            `select sum(valor) as entrada 
+            from transacoes 
+            where usuario_id = $1 and tipo = $2`, 
+            [id, 'entrada']);
+
+        const saidas = await pool.query(
+            `select sum(valor) as saida 
+            from transacoes 
+            where usuario_id = $1 and tipo = $2`, 
+            [id, 'saida']);
+    
+        const entrada = entradas.rows[0].entrada || 0;
+        const saida = saidas.rows[0].saida || 0;
+        
+        return res.status(200).json({entrada,saida})
+    } catch (error) {
+        return res.status(500).json({ mensagem: 'Erro ao obter extrato das transações.' });
+
+    }
+}
+
+
 module.exports = {
     listarTransacoes,
     cadastrarTransacao,
     obterTransacao,
     atualizarTransacao,
-    deletarTransacao
+    deletarTransacao,
+    obterExtratoTransacoes,
 }

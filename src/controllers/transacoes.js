@@ -15,21 +15,22 @@ const listarTransacoes = async (req, res) => {
 }
 
 const cadastrarTransacao = async (req, res) => {
-    const {tipo, descricao, valor, data, categoria_id} = req.body;
-    console.log(req.usuario.id);
+    const { tipo, descricao, valor, data, categoria_id } = req.body;
+
     try {
         const { rows } = await pool.query(
             'insert into transacoes (descricao, valor, data, categoria_id, usuario_id, tipo) values ($1, $2, $3, $4, $5, $6) returning *',
             [descricao, valor, data, categoria_id, req.usuario.id, tipo]
-            )
-        console.log(rows)
-		return res.status(201).json(rows[0])
+        )
+        return res.status(201).json(rows[0])
     } catch (error) {
         return res.status(500).json('Erro no servidor')
     }
 }
+
 const obterTransacao = async (req, res) => {
     const { id } = req.params;
+
     try {
         const { rows, rowCount } = await pool.query(`
             select t.id, t.tipo, t.descricao, t.valor, t.data, t.usuario_id, t.categoria_id, c.descricao as categoria_nome 
@@ -46,6 +47,7 @@ const obterTransacao = async (req, res) => {
         return res.status(500).json('Erro no servidor');
     }
 }
+
 const atualizarTransacao = async (req, res) => {
     const { id } = req.params;
     const { descricao, valor, data, categoria_id, tipo } = req.body;
@@ -133,4 +135,4 @@ module.exports = {
     atualizarTransacao,
     deletarTransacao,
     obterExtratoTransacoes,
-}
+};

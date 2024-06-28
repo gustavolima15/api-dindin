@@ -1,4 +1,4 @@
-# API-Banco-Digital
+# Gerenciamento de Transações
 
 ### O que é o projeto?
 
@@ -27,5 +27,6 @@ Este é um projeto de API para gerenciamento de transações financeiras, permit
 ### Como posso executar o projeto em minha máquina?
 
 1. No terminal, execute o comando `npm install` para instalar as dependências do projeto (Certifique-se que está na pasta raiz no projeto);
-2. Para rodar o servidor execute o comando `npm run dev`;
-3. Certifique-se que possui uma ferramente que permita testar APIs web, como o Insomnia, Postman, entre outras.
+2. Utilize os schemas na pasta "sql" para criação do banco de dados;
+3. Para rodar o servidor execute o comando `npm run dev`;
+4. Certifique-se que possui uma ferramente que permita testar APIs web, como o Insomnia, Postman, entre outras.
